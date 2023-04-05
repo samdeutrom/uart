@@ -22,7 +22,7 @@ module uart_tx
 	tx_states_e next;
 	
     /*-------------------------------------------
-    |           Baud Rate Generator				|				 
+    |           Baud Rate Generator             |				 
     -------------------------------------------*/
     localparam int BAUD_COUNTER_MAX = CLK_FREQ/BAUD_RATE; 
     localparam int HALF_BAUD_COUNTER_MAX = BAUD_COUNTER_MAX/2; 
