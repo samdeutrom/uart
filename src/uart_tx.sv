@@ -1,7 +1,6 @@
 /*
     Module to transmit single word over UART
     created by: Sam Deutrom
-    date create: 01/04/23
     date last modified: 05/04/23
 */
 
@@ -22,9 +21,9 @@ module uart_tx
 	tx_states_e state;
 	tx_states_e next;
 	
-	/*-------------------------------------------
+    /*-------------------------------------------
     |           Baud Rate Generator				|				 
-	-------------------------------------------*/
+    -------------------------------------------*/
     localparam int BAUD_COUNTER_MAX = CLK_FREQ/BAUD_RATE; 
     localparam int HALF_BAUD_COUNTER_MAX = BAUD_COUNTER_MAX/2; 
     localparam int BAUD_COUNTER_SZIE = $clog2(BAUD_COUNTER_MAX);
@@ -57,7 +56,7 @@ module uart_tx
     
     /*-------------------------------------------
     |         Sync tx_ready to baud_clk         |				 
-	-------------------------------------------*/
+    -------------------------------------------*/
     localparam int TX_STRETCH_COUNTER = BAUD_COUNTER_MAX+HALF_BAUD_COUNTER_MAX; //1.5 times new clk domain
     localparam int TX_STRETCH_SIZE = $clog2(TX_STRETCH_COUNTER);
     
@@ -95,9 +94,9 @@ module uart_tx
         end
     end
     
-	/*-------------------------------------------
+    /*-------------------------------------------
     |            Shifting Data Out              |				 
-	-------------------------------------------*/
+    -------------------------------------------*/
     logic  [DATA_WIDTH-1:0]  data_shift_buf;
     logic                    data_set; 
     logic                    data_shift;
@@ -114,9 +113,9 @@ module uart_tx
     assign data_set = ((state == IDEL) && (next == START)); 
     assign data_shift = (state == SEND);
 	
-	/*-------------------------------------------
+    /*-------------------------------------------
     |           Counting Data Sent              |				 
-	-------------------------------------------*/
+    -------------------------------------------*/
     localparam DATA_COUNTER_MAX  = DATA_WIDTH;
     localparam DATA_COUNTER_SIZE = $clog2(DATA_COUNTER_MAX);
 	
@@ -138,9 +137,9 @@ module uart_tx
     assign data_counter_enable = (state == SEND);
     assign state_change = (state != next);
 	
-	/*-------------------------------------------
+    /*-------------------------------------------
     |               State Machine               |				 
-	-------------------------------------------*/
+    -------------------------------------------*/
     always_ff @(posedge baud_clk or negedge rst_n) begin 
         if (!rst_n)  state <= IDEL;
         else         state <= next;
