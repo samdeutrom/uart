@@ -25,16 +25,16 @@ R0
 Z4 w1680509034
 Z5 8../../src/uart_rx.sv
 Z6 F../../src/uart_rx.sv
-Z7 L0 10
-Z8 OV;L;10.5b;63
-Z9 !s108 1680679117.000000
-Z10 !s107 ../uart_tx_tb.sv|../../src/uart_rx.sv|../../src/uart_rx_pkg.sv|../../src/uart_tx.sv|../../src/uart_tx_pkg.sv|
-Z11 !s90 -reportprogress|300|-f|files.tcl|
+L0 10
+Z7 OV;L;10.5b;63
+Z8 !s108 1680697090.000000
+Z9 !s107 ../uart_tx_tb.sv|../../src/uart_rx.sv|../../src/uart_rx_pkg.sv|../../src/uart_tx.sv|../../src/uart_tx_pkg.sv|
+Z10 !s90 -reportprogress|300|-f|files.tcl|
 !i113 1
-Z12 tCvgOpt 0
+Z11 tCvgOpt 0
 Xuart_rx_pkg
 R1
-Z13 !s110 1680679117
+Z12 !s110 1680697090
 !i10b 1
 !s100 Ye7VHRclF0jD<f=eM2JFl3
 I8C3^XiPE0>6hO^RZNd`9R2
@@ -45,15 +45,15 @@ w1680508635
 8../../src/uart_rx_pkg.sv
 F../../src/uart_rx_pkg.sv
 L0 7
-R8
+R7
 r1
 !s85 0
 31
+R8
 R9
 R10
-R11
 !i113 1
-R12
+R11
 Xuart_rx_sv_unit
 R1
 R2
@@ -71,39 +71,39 @@ R4
 R5
 R6
 L0 8
+R7
 R8
 R9
 R10
-R11
 !i113 1
-R12
+R11
 vuart_tx
 R1
-Z14 DXx4 work 11 uart_tx_pkg 0 22 o`2G=2BNJZOM:QXhz9FnG2
-DXx4 work 15 uart_tx_sv_unit 0 22 Dl?LVWJ2?jGMCZg9lk9Eh2
+Z13 DXx4 work 11 uart_tx_pkg 0 22 o`2G=2BNJZOM:QXhz9FnG2
+DXx4 work 15 uart_tx_sv_unit 0 22 z7RkNAR?OoTTbgFJ;5n@T3
 R3
 r1
 !s85 0
 31
 !i10b 1
-!s100 dL`6M?8FGAFE88WiQK_E53
-I6ldGd[U2B`Z2Kk]=ln6Gb0
+!s100 SK;4lhoLFL7lG_BM^NWYz3
+IOdbC;mOH4PL]md55dO38o2
 !s105 uart_tx_sv_unit
 S1
 R0
-Z15 w1680678608
-Z16 8../../src/uart_tx.sv
-Z17 F../../src/uart_tx.sv
+Z14 w1680696349
+Z15 8../../src/uart_tx.sv
+Z16 F../../src/uart_tx.sv
+L0 9
 R7
 R8
 R9
 R10
-R11
 !i113 1
-R12
+R11
 Xuart_tx_pkg
 R1
-R13
+R12
 !i10b 1
 !s100 M:;d2c`U;RNGL7904GkGS1
 Io`2G=2BNJZOM:QXhz9FnG2
@@ -114,58 +114,58 @@ w1680433800
 8../../src/uart_tx_pkg.sv
 F../../src/uart_tx_pkg.sv
 L0 7
-R8
+R7
 r1
 !s85 0
 31
+R8
 R9
 R10
-R11
 !i113 1
-R12
+R11
 Xuart_tx_sv_unit
 R1
-R14
-VDl?LVWJ2?jGMCZg9lk9Eh2
+R13
+Vz7RkNAR?OoTTbgFJ;5n@T3
 r1
 !s85 0
 31
 !i10b 1
-!s100 ce[3?gRT<c5Uk21nPh6_21
-IDl?LVWJ2?jGMCZg9lk9Eh2
+!s100 lg^`U@0CgRdj803O`zZ4b0
+Iz7RkNAR?OoTTbgFJ;5n@T3
 !i103 1
 S1
 R0
+R14
 R15
 R16
-R17
-L0 8
+L0 7
+R7
 R8
 R9
 R10
-R11
 !i113 1
-R12
+R11
 vuart_tx_tb
 R1
-R13
+R12
 !i10b 1
-!s100 6IfV7R;kX^A2mj2K><RQf2
-IWiX;GGKVzInmJLb=4z4XU1
+!s100 U`g1]N>^:A2[fZ5L2bihG2
+IjUY7TXOh6H1a96>2fFR<^0
 R3
 !s105 uart_tx_tb_sv_unit
 S1
 R0
-w1680679114
+w1680696177
 8../uart_tx_tb.sv
 F../uart_tx_tb.sv
 L0 7
-R8
+R7
 r1
 !s85 0
 31
+R8
 R9
 R10
-R11
 !i113 1
-R12
+R11

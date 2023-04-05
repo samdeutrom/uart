@@ -41,7 +41,6 @@ uart_tx tx (
 				.clk(clk),
 				.rst_n(rst_n),
 				.tx_send_i(tx_send_i),
-                .rx_ready_i(1'b1),
 				.data_i(tx_data_i),
 				.data_o(tx_data_o)
 			); 
