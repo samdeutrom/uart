@@ -1,14 +1,13 @@
 /*
     Package contains state for uart_tx
     created by: Sam Deutrom
-    date create: 01/04/23
-    date last modified: 01/04/23
+    date create: 02/04/23
+    date last modified: 02/04/23
 */
-package uart_tx_pkg;
+package uart_rx_pkg;
     typedef enum logic [1:0] {
         IDEL,
         START,
-        SEND,
-        STOP
-    } states_e;
+        RECEIVING
+    } rx_states_e;
 endpackage

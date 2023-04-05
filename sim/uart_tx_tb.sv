@@ -13,11 +13,12 @@ module uart_tx_tb();
 localparam PERIOD = 10;
 
 logic 		clk;
-logic 		reset; 
-logic 		tx_ready_i;
-logic 		rx_ready_i;
-logic [7:0] data_i;
-logic 		data_o;
+logic 		rst_n; 
+// For tx
+logic 		tx_send_i;
+logic [7:0] tx_data_i;
+logic 		tx_data_o; // rx_data_in
+// For rx
 
 
 // create clock signal
@@ -27,38 +28,39 @@ initial begin
 end 
 
 // initial reset
-initial begin 
-	reset <= 1;
-	@(posedge clk); reset = 0;
-	#(PERIOD*5); reset = 1; 
-end
+task reset(); 
+    begin 
+        rst_n <= 1;
+        @(posedge clk); rst_n = 0;
+        #(PERIOD*5); rst_n = 1;
+    end
+endtask 
 
 
-uart_tx MUT (
+uart_tx tx (
 				.clk(clk),
-				.rst_n(reset),
-				.tx_ready_i(tx_ready_i),
-				.rx_ready_i(rx_ready_i),
-				.data_i(data_i),
-				.data_o(data_o)
-			);
+				.rst_n(rst_n),
+				.tx_send_i(tx_send_i),
+                .rx_ready_i(1'b1),
+				.data_i(tx_data_i),
+				.data_o(tx_data_o)
+			); 
+            
 
+           
 
 initial begin
-
-	tx_ready_i = 0;
-	rx_ready_i = 0;
-	data_i = '0;
-	
+    reset();
+	tx_send_i = 0;
+	tx_data_i = '0;
 	#(PERIOD*10000);
-	rx_ready_i = 1;
 	#(PERIOD*100);
-	data_i = 8'b01010101;
+	tx_data_i = 8'b01010101;
 	#(PERIOD*10000);
-	tx_ready_i = 1;
-	#(PERIOD*1000);
-	tx_ready_i = 0;
-	#(PERIOD*100000);
+	tx_send_i = 1;
+	#(PERIOD*10);
+	tx_send_i = 0;
+	#(PERIOD*50000);
 	
 	$stop();
 

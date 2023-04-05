@@ -10,5 +10,5 @@ package uart_tx_pkg;
         START,
         SEND,
         STOP
-    } states_e;
+    } tx_states_e;
 endpackage
