@@ -1,2 +1,2 @@
 # uart
- SystemVerilog modules for transmitting and recieving a word over UART
+ SystemVerilog modules for transmitting a word over UART
