@@ -1,8 +1,6 @@
 /*
     Module to transmit single word over UART
     created by: Sam Deutrom
-    date create: 02/04/23
-    date last modified: 02/04/23
 */
 
 import uart_rx_pkg::*;
