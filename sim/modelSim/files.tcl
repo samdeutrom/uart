@@ -4,4 +4,4 @@
 ../../src/uart_rx_pkg.sv
 ../../src/uart_rx.sv
 
-../uart_tx_tb.sv
+../uart_tb.sv

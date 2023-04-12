@@ -5,7 +5,7 @@ vlib work
 #Compile files
 vlog -f files.tcl
 
-set top_level work.uart_tx_tb
+set top_level work.uart_tb
 
 vsim -t ns $top_level
 

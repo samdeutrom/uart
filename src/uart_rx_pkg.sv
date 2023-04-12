@@ -5,9 +5,8 @@
     date last modified: 02/04/23
 */
 package uart_rx_pkg;
-    typedef enum logic [1:0] {
+    typedef enum logic {
         IDEL,
-        START,
         RECEIVING
     } rx_states_e;
 endpackage

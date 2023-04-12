@@ -1,10 +1,10 @@
 `timescale 1ns/1ns
 
 /*
-Test bench for uart_tx.sv
+Test bench for uart_tx.sv and uar_rx.sv
 */
 
-module uart_tx_tb(); 
+module uart_tb(); 
 
 
 
@@ -19,6 +19,7 @@ logic 		tx_send_i;
 logic [7:0] tx_data_i;
 logic 		tx_data_o; // rx_data_in
 // For rx
+logic [7:0] rx_data_o;
 
 
 // create clock signal
@@ -45,6 +46,13 @@ uart_tx tx (
 				.data_o(tx_data_o)
 			); 
             
+uart_rx rx (
+				.clk(clk),
+				.rst_n(rst_n),
+				.data_i(tx_data_o),
+				.data_o(rx_data_o)
+			); 
+            
 
            
 
@@ -55,6 +63,14 @@ initial begin
 	#(PERIOD*10000);
 	#(PERIOD*100);
 	tx_data_i = 8'b01010101;
+	#(PERIOD*10000);
+	tx_send_i = 1;
+	#(PERIOD*10);
+	tx_send_i = 0;
+	#(PERIOD*50000);
+    
+    #(PERIOD*100);
+	tx_data_i = 8'b01100110;
 	#(PERIOD*10000);
 	tx_send_i = 1;
 	#(PERIOD*10);
