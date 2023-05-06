@@ -2,7 +2,6 @@
     Module to transmit single word over UART
     created by: Sam Deutrom
 */
-
 import uart_rx_pkg::*;
 
 module uart_rx
@@ -24,15 +23,12 @@ module uart_rx
 	|       data_i Falling Edge Detection       |				 
 	-------------------------------------------*/
     logic [1:0]	data_i_fall_detect;
-    logic 		start_data_receive;
     
     always_ff @(posedge clk or negedge rst_n) begin 
         if (!rst_n)    data_i_fall_detect <= 2'b00; 
         else           data_i_fall_detect <= {data_i_fall_detect[0], data_i};
     end
 	
-    assign start_data_receive = (data_i_fall_detect[1] && !data_i_fall_detect[0]);
-    
     /*-------------------------------------------
     |           Baud Rate Generator             |				 
     -------------------------------------------*/
@@ -44,7 +40,7 @@ module uart_rx
     
     // Flags
     logic   baud_counter_done;;
-    logic   state_chnage; 
+    logic   state_change; 
     
     // Flags Logic
     assign state_change = (state != next);
@@ -65,24 +61,22 @@ module uart_rx
     localparam int DATA_COUNTER_MAX  = DATA_WIDTH+1; // Need to be able to count up to the data width  
     localparam int DATA_COUNTER_SIZE = $clog2(DATA_COUNTER_MAX);
     
-    
     logic  [DATA_COUNTER_SIZE-1:0]  data_counter;
-    logic                           data_counter_done;
-    logic                           data_done;
     
-   
+    //Flags
+    logic                           data_done;
+    // Flags Logic
+    assign data_done = (data_counter == DATA_COUNTER_MAX-1); 
+  
     // increment data_counter 
     always_ff @(posedge clk or negedge rst_n) begin
         if (!rst_n)  data_counter <= {DATA_COUNTER_SIZE{1'b0}};
         else begin 
-            if      (data_counter_done || state_change)     data_counter <= {DATA_COUNTER_SIZE{1'b0}};
+            if      (data_done || state_change)     data_counter <= {DATA_COUNTER_SIZE{1'b0}};
             else if (baud_counter_done)                     data_counter <= data_counter + 1'b1;
         end
     end
-    
-    assign data_counter_done = (data_counter == DATA_COUNTER_MAX-1);
-    assign data_done = data_counter_done; 
-    
+
     /*-------------------------------------------
 	|				State Machine				|				 
 	-------------------------------------------*/  
@@ -91,11 +85,13 @@ module uart_rx
     logic  [RX_REGISTER_WIDTH-1:0]  rx_shift_reg;
    
     // flags
+    logic 	start_data_receive;
     logic   start_done;
     logic   start_error;
     logic   stop_done;
     logic   stop_error;
     // flag logic
+    assign start_data_receive = (data_i_fall_detect[1] && !data_i_fall_detect[0]);
     assign  start_done = ((baud_counter == HALF_BAUD_COUNTER_MAX-1) && !data_i);
     assign  start_error = ((baud_counter == HALF_BAUD_COUNTER_MAX-1) && data_i);
     
@@ -133,18 +129,9 @@ module uart_rx
                             
             ERROR       :   rx_shift_reg <= {DATA_WIDTH{1'b1}};
             endcase
-        end
-  
-       
+        end   
     end    
-
-    always_ff @(posedge clk or negedge rst_n) begin
-        if  (!rst_n)    data_o <= {DATA_WIDTH{1'b0}};
-        else begin
-           data_o <= rx_shift_reg;
-        end
-  
-       
-    end     
+    
+    assign data_o = (state == IDEL) ? rx_shift_reg : {DATA_WIDTH{1'b0}};  
 
 endmodule
