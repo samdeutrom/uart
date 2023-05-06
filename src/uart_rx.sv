@@ -27,13 +27,13 @@ module uart_rx
     logic 		start_data_receive;
     
     always_ff @(posedge clk or negedge rst_n) begin 
-        if (!rst_n)    data_i_fall_detect <= '0; 
+        if (!rst_n)    data_i_fall_detect <= 2'b00; 
         else           data_i_fall_detect <= {data_i_fall_detect[0], data_i};
     end
 	
-    assign start_data_receive = (!data_i_fall_detect[0] && data_i_fall_detect[1]);
-                                 
-     /*-------------------------------------------
+    assign start_data_receive = (data_i_fall_detect[1] && !data_i_fall_detect[0]);
+    
+    /*-------------------------------------------
     |           Baud Rate Generator             |				 
     -------------------------------------------*/
     localparam int BAUD_COUNTER_MAX = CLK_FREQ/BAUD_RATE; 
@@ -41,106 +41,110 @@ module uart_rx
     localparam int BAUD_COUNTER_SZIE = $clog2(BAUD_COUNTER_MAX);
 	
     logic  [BAUD_COUNTER_SZIE-1:0]  baud_counter;
-    logic                           baud_counter_enable;
-    logic                           baud_counter_done;;
-    logic                           baud_clk;
-    logic                           baud_clk_0;
+    
+    // Flags
+    logic   baud_counter_done;;
+    logic   state_chnage; 
+    
+    // Flags Logic
+    assign state_change = (state != next);
+    assign baud_counter_done = (baud_counter == (BAUD_COUNTER_MAX-1));
     
 	// Increment baud_counter logic
     always_ff @(posedge clk or negedge rst_n) begin 
-        if (!rst_n)  baud_counter <= '0;
+        if (!rst_n)                 baud_counter <= {BAUD_COUNTER_SZIE{1'b0}};
         else begin
-            if (baud_counter_done)         baud_counter <= '0;
-            else if (baud_counter_enable)  baud_counter <= baud_counter + 1'd1;
+            if (baud_counter_done || state_change)  baud_counter <= {BAUD_COUNTER_SZIE{1'b0}};
+            else                                    baud_counter <= baud_counter + 1'd1;
         end
     end
-    
-    // Generate baud_clk logic
-    always_ff @(posedge clk or negedge rst_n) begin 
-        if (!rst_n)  baud_clk <= '0;
-        else begin
-            if (baud_clk_0)  baud_clk <= '0;
-            else 			 baud_clk <= '1;
-        end
-    end
-
-    assign baud_counter_enable = (next == RECEIVING);
-    assign baud_clk_0 = ((baud_counter <= HALF_BAUD_COUNTER_MAX-1) || (next == IDEL));
-    assign baud_counter_done = (baud_counter == BAUD_COUNTER_MAX-1);
-
     
     /*-------------------------------------------
-	|                Data Shifting              |				 
-	-------------------------------------------*/
-    
-    localparam int RX_REGISTER_WIDTH = DATA_WIDTH + 2; // add stop bit and start bit
-    localparam int DATA_COUNTER_MAX  = RX_REGISTER_WIDTH;  
+    |                Data Counting              |				 
+    -------------------------------------------*/
+    localparam int DATA_COUNTER_MAX  = DATA_WIDTH+1; // Need to be able to count up to the data width  
     localparam int DATA_COUNTER_SIZE = $clog2(DATA_COUNTER_MAX);
     
-    logic  [RX_REGISTER_WIDTH-1:0]  data_o_reg;
+    
     logic  [DATA_COUNTER_SIZE-1:0]  data_counter;
+    logic                           data_counter_done;
     logic                           data_done;
     
+   
     // increment data_counter 
-    always_ff @(posedge baud_clk or negedge rst_n) begin
-        if (!rst_n)  data_counter <= '0;
+    always_ff @(posedge clk or negedge rst_n) begin
+        if (!rst_n)  data_counter <= {DATA_COUNTER_SIZE{1'b0}};
         else begin 
-            if (data_counter == DATA_COUNTER_MAX - 1)  data_counter <= 0;
-            else                                       data_counter <= data_counter + 1'd1;
+            if      (data_counter_done || state_change)     data_counter <= {DATA_COUNTER_SIZE{1'b0}};
+            else if (baud_counter_done)                     data_counter <= data_counter + 1'b1;
         end
     end
     
-    always_ff @(posedge baud_clk or negedge rst_n) begin
-        if (!rst_n)  data_done <= '0;
-        else begin 
-            if (data_counter == DATA_COUNTER_MAX - 1)  data_done <= 1;
-            else                                       data_done <= 0;
-        end
-    end
+    assign data_counter_done = (data_counter == DATA_COUNTER_MAX-1);
+    assign data_done = data_counter_done; 
     
-    always_ff @(posedge baud_clk or negedge rst_n) begin
-        if (!rst_n)  data_o_reg <= '0;
-        else         data_o_reg <= {data_i, data_o_reg[RX_REGISTER_WIDTH-1:1]};
-    end
-     
-    
-    /*-------------------------------------------
-	|                Validate Data              |				 
-	-------------------------------------------*/
-    logic data_valid;
-    
-    assign data_valid = ((data_o_reg[9]) && (!data_o_reg[0]) && (state == IDEL)); // Check start and stop bit
     /*-------------------------------------------
 	|				State Machine				|				 
-	-------------------------------------------*/
+	-------------------------------------------*/  
+    localparam int RX_REGISTER_WIDTH = DATA_WIDTH;
+    
+    logic  [RX_REGISTER_WIDTH-1:0]  rx_shift_reg;
+   
+    // flags
+    logic   start_done;
+    logic   start_error;
+    logic   stop_done;
+    logic   stop_error;
+    // flag logic
+    assign  start_done = ((baud_counter == HALF_BAUD_COUNTER_MAX-1) && !data_i);
+    assign  start_error = ((baud_counter == HALF_BAUD_COUNTER_MAX-1) && data_i);
+    
+    assign  stop_done = ((baud_counter == BAUD_COUNTER_MAX-1) && data_i);
+    assign  stop_error = ((baud_counter == BAUD_COUNTER_MAX-1) && !data_i);
+    
     always_ff @(posedge clk or negedge rst_n) begin 
         if (!rst_n)    state <= IDEL;
         else           state <= next;
     end
-	
+    
 	// Next state logic
     always_comb begin 
         case (state)
-            IDEL       :  if (start_data_receive)  next = RECEIVING;
-                          else                     next = IDEL;
-            RECEIVING  :  if (data_done)           next = IDEL;
-                          else                     next = RECEIVING;
-            default    :                           next = IDEL;            
+            IDEL        :   if      (start_data_receive)    next = START;
+                            else                            next = IDEL;
+            START       :   if      (start_done)            next = DATA;
+                            else if (start_error)           next = ERROR;
+                            else                            next = START;
+            DATA        :   if      (data_done)             next = STOP;
+                            else                            next = DATA;
+            STOP        :   if      (stop_done)             next = IDEL;
+                            else if (stop_error)            next = ERROR;
+                            else                            next = IDEL;
+            default     :                                   next = ERROR;            
         endcase 
     end
-	
-      // Output logic
+    
     always_ff @(posedge clk or negedge rst_n) begin
-        if (!rst_n )    data_o <= '0;
+        if  (!rst_n)    rx_shift_reg <= {DATA_WIDTH{1'b0}};
         else begin
+            rx_shift_reg <= rx_shift_reg;
             case (next)
-                IDEL  : if (data_valid)  data_o <= data_o_reg[(RX_REGISTER_WIDTH-1)-1:1];
-                RECEIVING : data_o <= data_o;
-                default : data_o <= '0;
+            DATA        :   if (baud_counter_done)  rx_shift_reg <= {data_i, rx_shift_reg[(DATA_WIDTH-1):1]}; // shift LSB out
+                            
+            ERROR       :   rx_shift_reg <= {DATA_WIDTH{1'b1}};
             endcase
-        end	
-    end
+        end
   
+       
+    end    
 
+    always_ff @(posedge clk or negedge rst_n) begin
+        if  (!rst_n)    data_o <= {DATA_WIDTH{1'b0}};
+        else begin
+           data_o <= rx_shift_reg;
+        end
+  
+       
+    end     
 
 endmodule

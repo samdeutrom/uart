@@ -1,0 +1,171 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/Sam/Documents/FPGA/lib/uart/sim/modelSim
+vuart_rx
+Z1 DXx6 sv_std 3 std 0 22 AD7iAPLo6nTIKk<N0eo=D3
+Z2 DXx4 work 11 uart_rx_pkg 0 22 aghfJ>U`94HHN2ln6QSEW3
+DXx4 work 15 uart_rx_sv_unit 0 22 IVC7P<k;:H3@6lgMRcM6?0
+Z3 VDg1SIo80bB@j0V0VzS_@n1
+r1
+!s85 0
+31
+!i10b 1
+!s100 0a4UJLIQnM8COUKJEZB3E0
+I7YmaHNfPi4g=BYf?;LX[l3
+!s105 uart_rx_sv_unit
+S1
+R0
+Z4 w1683338840
+Z5 8../../src/uart_rx.sv
+Z6 F../../src/uart_rx.sv
+L0 8
+Z7 OV;L;10.5b;63
+Z8 !s108 1683338844.000000
+Z9 !s107 ../uart_tb.sv|../../src/uart_rx.sv|../../src/uart_rx_pkg.sv|../../src/uart_tx.sv|../../src/uart_tx_pkg.sv|
+Z10 !s90 -reportprogress|300|-f|files.tcl|
+!i113 1
+Z11 tCvgOpt 0
+Xuart_rx_pkg
+R1
+Z12 !s110 1683338844
+!i10b 1
+!s100 b?VG:8J0XGnWCQ^m9JYZY0
+IaghfJ>U`94HHN2ln6QSEW3
+VaghfJ>U`94HHN2ln6QSEW3
+S1
+R0
+w1683331383
+8../../src/uart_rx_pkg.sv
+F../../src/uart_rx_pkg.sv
+L0 5
+R7
+r1
+!s85 0
+31
+R8
+R9
+R10
+!i113 1
+R11
+Xuart_rx_sv_unit
+R1
+R2
+VIVC7P<k;:H3@6lgMRcM6?0
+r1
+!s85 0
+31
+!i10b 1
+!s100 M2Rc;<7D29^U<7X7R@C:P1
+IIVC7P<k;:H3@6lgMRcM6?0
+!i103 1
+S1
+R0
+R4
+R5
+R6
+L0 6
+R7
+R8
+R9
+R10
+!i113 1
+R11
+vuart_tb
+R1
+R12
+!i10b 1
+!s100 cCmVJdX^_Aj4^HAc623Ko3
+IlKcJ?gI5;50NF^4jhY?Y80
+R3
+!s105 uart_tb_sv_unit
+S1
+R0
+w1681087977
+8../uart_tb.sv
+F../uart_tb.sv
+L0 7
+R7
+r1
+!s85 0
+31
+R8
+R9
+R10
+!i113 1
+R11
+vuart_tx
+R1
+Z13 DXx4 work 11 uart_tx_pkg 0 22 o`2G=2BNJZOM:QXhz9FnG2
+DXx4 work 15 uart_tx_sv_unit 0 22 ^SDR;_D?MDeeIZ`23jB_d0
+R3
+r1
+!s85 0
+31
+!i10b 1
+!s100 02GNoVMi43;aEN@PWZnbU1
+I0J3YUO`IYN<G^QzYZ^6lM1
+!s105 uart_tx_sv_unit
+S1
+R0
+Z14 w1683280295
+Z15 8../../src/uart_tx.sv
+Z16 F../../src/uart_tx.sv
+L0 8
+R7
+R8
+R9
+R10
+!i113 1
+R11
+Xuart_tx_pkg
+R1
+R12
+!i10b 1
+!s100 M:;d2c`U;RNGL7904GkGS1
+Io`2G=2BNJZOM:QXhz9FnG2
+Vo`2G=2BNJZOM:QXhz9FnG2
+S1
+R0
+w1680433800
+8../../src/uart_tx_pkg.sv
+F../../src/uart_tx_pkg.sv
+L0 7
+R7
+r1
+!s85 0
+31
+R8
+R9
+R10
+!i113 1
+R11
+Xuart_tx_sv_unit
+R1
+R13
+V^SDR;_D?MDeeIZ`23jB_d0
+r1
+!s85 0
+31
+!i10b 1
+!s100 bF=B?ON5To6TL^4zA_b9D2
+I^SDR;_D?MDeeIZ`23jB_d0
+!i103 1
+S1
+R0
+R14
+R15
+R16
+L0 6
+R7
+R8
+R9
+R10
+!i113 1
+R11

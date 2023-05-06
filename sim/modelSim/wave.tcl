@@ -17,14 +17,13 @@ add wave -divider {}
 
 add wave -divider {uart_rx}\
 {/uart_tb/rx.data_i}\
-{/uart_tb/rx.baud_clk}\
 {/uart_tb/rx.baud_counter_enable}\
 {/uart_tb/rx.baud_counter_done}\
 {/uart_tb/rx.data_counter}\
-{/uart_tb/rx.data_done_reg}\
+{/uart_tb/rx.data_counter_done}\
 {/uart_tb/rx.data_done}\
 {/uart_tb/rx.next}\
 {/uart_tb/rx.state}\
-{/uart_tb/rx.data_o_reg}\
+{/uart_tb/rx.rx_shift_reg}\
 {/uart_tb/rx_data_o}\
 add wave -divider {}

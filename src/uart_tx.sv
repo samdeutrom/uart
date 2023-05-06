@@ -56,7 +56,7 @@ module uart_tx
     /*-------------------------------------------
     |         Sync tx_ready to baud_clk         |				 
     -------------------------------------------*/
-    localparam int TX_STRETCH_COUNTER = BAUD_COUNTER_MAX+HALF_BAUD_COUNTER_MAX; //1.5 times new clk domain
+    localparam int TX_STRETCH_COUNTER = BAUD_COUNTER_MAX + HALF_BAUD_COUNTER_MAX; //1.5 times new clk domain
     localparam int TX_STRETCH_SIZE = $clog2(TX_STRETCH_COUNTER);
     
     logic  [1:0]                  tx_send_buf;
